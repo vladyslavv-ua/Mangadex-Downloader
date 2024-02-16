@@ -1,0 +1,6 @@
+insert:
+INSERT INTO manga(id, name, description, cover, altTitles, availableTranslatedLanguages, status, createdAt)
+VALUES (?, ?,?, ?,?, ?,?, ?);
+
+search:
+SELECT * FROM manga WHERE id = ?;
