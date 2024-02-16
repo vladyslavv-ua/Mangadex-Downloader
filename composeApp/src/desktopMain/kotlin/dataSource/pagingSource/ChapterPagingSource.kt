@@ -15,19 +15,20 @@ class ChapterPagingSource(private val apiSource: ApiSource, private val id: Stri
         try {
             val currentPage = params.key ?: 0
             println(currentPage)
-            val offset = currentPage + DEFAULT_PAGE_LIMIT
+            val offset = currentPage * DEFAULT_PAGE_LIMIT
             val chapters = apiSource.getMangaChapters(
                 id = id,
                 lang = lang,
-                offset = currentPage
+                offset = offset
             )
             return if (chapters == null) {
                 LoadResult.Error(Throwable("some error"))
             } else {
-                val nextKey = if ((chapters.total ?: 0) < offset) currentPage + 1 else null
+                val nextKey = if ((chapters.total ?: 0) > (chapters.offset ?: 0)) currentPage + 1 else null
                 println("NEXT KEY IS $nextKey")
                 println("TOTAL IS  ${chapters.total}")
                 println("OFFSET IS $offset")
+                println("CHAPTERS OFFSET IS ${chapters.offset}")
                 println("CURRENT PAGE IS $currentPage")
 
                 LoadResult.Page(
